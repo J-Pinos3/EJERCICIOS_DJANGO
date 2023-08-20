@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+
+{% block title %}
+  My Tennis Club - List of all Members
+{% endblock %}
+
+
+{% block content %}
+
+  <p><a href="/">HOME</a></p>
+  <h1>Members</h1>
+    
+  <ul>
+    {% for x in mymembers %}
+      
+
+      <li>
+          <a href="details/{{x.id}}">
+              {{ x.firstName }} {{ x.lastName }}
+          </a>
+      </li>
+
+    {% endfor %}
+  </ul>
+{% endblock %}
+
