@@ -7,20 +7,17 @@
 
 {% block content %}
 
-  <p><a href="/">HOME</a></p>
-  <h1>Members</h1>
+
+  <div class="mycard">
+    <h1>Members</h1>
     
-  <ul>
-    {% for x in mymembers %}
-      
+    <ul>
+      {% for x in mymembers %}
+        <li onclick="window.location='details/{{x.id}}'"> {{ x.firstName }} {{ x.lastName }} </li>
+      {% endfor %}
+    </ul>
 
-      <li>
-          <a href="details/{{x.id}}">
-              {{ x.firstName }} {{ x.lastName }}
-          </a>
-      </li>
+  </div>
 
-    {% endfor %}
-  </ul>
 {% endblock %}
 

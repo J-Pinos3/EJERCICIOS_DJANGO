@@ -37,10 +37,32 @@ def main(request):
   return HttpResponse(template.render())
 
 
+
+"""
+VERSIÓN 1
 def testing(request):
+  mymembers = Member.objects.all().values()
   template = loader.get_template('template.html')
-  context = {
-    'fruits':['Apple','Banana','Cherry',],
-    'firstname':'José Pinos'
+  #context = {
+  #  'fruits':['Apple','Banana','Cherry',],
+  #  'firstname':'José Pinos'
+  #}
+  context={
+    'mymembers':mymembers,
+    'fruits':['Apple','Banana','Cherry','Strawberry'],
+  }
+  return HttpResponse(template.render(context, request))
+"""
+def testing(request):
+  mydata = Member.objects.all().order_by('-lastName').values()#con values, me devuelve cada objeto como un diccionario
+  miembros = Member.objects.filter(firstName='José').values() | Member.objects.filter(firstName='Diego').values()
+  template = loader.get_template('template.html')
+  #context = {
+  #  'fruits':['Apple','Banana','Cherry',],
+  #  'firstname':'José Pinos'
+  #}
+  context={
+    'mymembers':mydata,
+    'miembros':miembros,
   }
   return HttpResponse(template.render(context, request))
