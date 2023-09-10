@@ -10,10 +10,48 @@
 
     {% block content%}
 
-    <div class="col-md-6 offset-md-3">
+    
 
         {% if user.is_authenticated %}
-            <h1>Welcome to crm</h1>
+            <h3>Records</h1>
+
+            <table class=" table table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">City</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Zip Code</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">ID</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if records %}
+                            {% for k in records %}
+                    <tr>
+                        
+                            <td> {{k.first_name}} {{k.last_name}}   </td>
+                            <td> {{k.email}}   </td>
+                            <td>  {{k.phone}}  </td>
+                            <td>  {{k.address}}  </td>
+                            <td>  {{k.city}}  </td>
+                            <td>  {{k.state}}  </td>
+                            <td>  {{k.zipcode}}  </td>
+                            <td>  {{k.created_at}}  </td>
+                            <td>  {{k.id}}   </td> 
+                            
+                    </tr>
+                            {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+
+
         {% else %}
 
             <h1>Login</h1>
@@ -21,22 +59,22 @@
             <form method="POST" action="{% url 'home' %}">
                 {% csrf_token %}
 
-                <form>
-                    <div class="mb-3">
-                    <input type="text" class="form-control" name="username", placeholder="Username" required>
-                    </div>
-                    <div class="mb-3">
-                    <input type="password" class="form-control" name="password", placeholder="Password" required>
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-secondary">Login</button>
-                </form>
+                
+                <div class="mb-3">
+                <input type="text" class="form-control" name="username", placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                <input type="password" class="form-control" name="password", placeholder="Password" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-secondary">Login</button>
+            
 
             </form>
         
         {% endif %}
 
-    </div>
+    
 
     {% endblock %}
 
