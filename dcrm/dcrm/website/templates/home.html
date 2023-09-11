@@ -43,8 +43,7 @@
                             <td>  {{k.state}}  </td>
                             <td>  {{k.zipcode}}  </td>
                             <td>  {{k.created_at}}  </td>
-                            <td>  {{k.id}}   </td> 
-                            
+                            <td> <a href="{% url 'record' k.id %}"> {{k.id}} </a> </td>
                     </tr>
                             {% endfor %}
                     {% endif %}
@@ -53,7 +52,7 @@
 
 
         {% else %}
-
+        <div class="col-md-6 offset-md-3">
             <h1>Login</h1>
             <br>
             <form method="POST" action="{% url 'home' %}">
@@ -71,7 +70,7 @@
             
 
             </form>
-        
+        </div>
         {% endif %}
 
     

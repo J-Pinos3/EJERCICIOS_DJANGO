@@ -4,5 +4,24 @@
 
 <h2>Customer Record</h2>
 
+    <div class="card text-bg-dark mb-3 border-info mb-3 card-dark" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{customer_record.first_name}} {{customer_record.last_name}} </li>
+            <li class="list-group-item">{{customer_record.email}}</li>
+            <li class="list-group-item">{{customer_record.phone}}</li>
+            <li class="list-group-item">{{customer_record.address}}</li>
+            <li class="list-group-item">{{customer_record.city}}</li>
+            <li class="list-group-item">{{customer_record.state}}</li>
+            <li class="list-group-item">{{customer_record.zipcode}} </li>
+            <li class="list-group-item">{{customer_record.created_at}} </li>
+            <li class="list-group-item">{{customer_record.id}} </li>
+        </ul>
+    </div>
+    <br><br>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+   
+    <a href="{% url 'delete_record' customer_record.id %}" class="btn btn-danger">Delete</a>
+
+    <a href="{% url 'update_record' customer_record.id %}" class="btn btn-secondary">Update</a>
 
 {% endblock %}
