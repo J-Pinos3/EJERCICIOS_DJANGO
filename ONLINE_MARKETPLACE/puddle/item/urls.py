@@ -8,6 +8,8 @@ app_name = 'item'
 
 urlpatterns = [
     #path('item/detail/<int:pk>', detail, name='detail'),
+    path('new/', views.new, name='new'),
     path('<int:pk>/', views.detail, name='detail'),
+    
 
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+]# + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
