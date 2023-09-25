@@ -30,9 +30,18 @@
 
     {% endif %}
 
-    <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">
-        Create
-    </button>
+
+    {% if is_edit_form %}
+        <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">
+            Update
+        </button>
+    {% else %}
+        <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">
+            Create
+        </button>
+    {% endif %}
+
+
 
 </form>
 
