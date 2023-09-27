@@ -80,4 +80,4 @@ def edit(request,pk):
 
     is_edit_form = isinstance(form, EditItemForm)
 
-    return render(request, 'item/form.html', {'form':form, 'title':'Edit Item', 'is_edit_form':'is_edit_form'})
+    return render(request, 'item/form.html', {'form':form, 'title':'Edit Item', 'is_edit_form':is_edit_form})
