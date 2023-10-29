@@ -19,10 +19,19 @@ class Product(models.Model):
     price = models.FloatField()
     digital = models.BooleanField(default=False, null=True, blank=False)
     #if the product is digital, we do not need to send it
-    #IMAGEFIELD
+    image = models.ImageField(null=True, blank=True)
+
     def __str__(self):
         return self.name
-
+    
+    #lets avoid a problem if an item doesnot han an image
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
 
 class Order(models.Model):
     #               un cliente puede tener muchas órdenes
