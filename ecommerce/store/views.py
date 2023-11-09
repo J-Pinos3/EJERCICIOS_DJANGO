@@ -5,9 +5,19 @@ from .models import *
 
 
 def store(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:
+        items=[]
+        order = {'get_cart_total':0, 'get_cart_items':0} 
+        cartItems = order['get_cart_items']
 
     products = Product.objects.all()
-    context = {'products':products}
+
+    context = {'products':products, 'cartItems':cartItems}
     return render(request, 'store/store.html', context)
 
 
@@ -18,13 +28,15 @@ def cart(request):
         #if can not find an item, create it
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         #items = OrderItem.objects.filter(order=order)
+        cartItems = order.get_cart_items
         # all the order-items that have order as a parent
         items = order.orderitem_set.all()
     else:
         items=[]
         #if user is not authenticated the code above will throw an error
         order = {'get_cart_total':0, 'get_cart_items':0}
-    return render(request, 'store/cart.html', {'items':items, 'order':order})
+        cartItems = order['get_cart_items']
+    return render(request, 'store/cart.html', {'items':items, 'order':order, 'cartItems':cartItems})
 
 
 def checkout(request): 
@@ -33,13 +45,15 @@ def checkout(request):
         #if can not find an item, create it
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         #items = OrderItem.objects.filter(order=order)
+        cartItems = order.get_cart_items
         # all the order-items that have order as a parent
         items = order.orderitem_set.all()
     else:
         items=[]
         #if user is not authenticated the code above will throw an error
-        order = {'get_cart_total':0, 'get_cart_items':0} 
-    context = {'items':items, 'order':order}
+        order = {'get_cart_total':0, 'get_cart_items':0}
+        cartItems = order['get_cart_items']
+    context = {'items':items, 'order':order,'cartItems':cartItems}
     return render(request, 'store/checkout.html', context)
 
 def updateItem(request):
