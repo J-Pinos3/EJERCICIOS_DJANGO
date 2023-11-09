@@ -31,7 +31,7 @@ function updateUserOrder(productId, action){
         method: 'POST',
         headers:{
             'Content-Type':'application/json',
-            'X_CSRFToken': csrftoken
+            'X-CSRFToken': csrftoken
         },
         body:JSON.stringify({'productId':productId, 'action': action})
         //body is the data we send to backend
