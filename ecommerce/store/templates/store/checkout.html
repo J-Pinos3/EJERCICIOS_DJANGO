@@ -20,7 +20,7 @@
                     </div>
 
 
-                    <div class="shipping-info">
+                    <div id="shipping-info">
 						<hr>
 						<p>Shipping Information:</p>
 						<hr>
@@ -76,5 +76,13 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        var shipping = "{{order.shipping}}"
+
+        if( shipping == 'False' ){
+            document.getElementById('shipping-info').innerHTML = " "
+        }
+    </script>
 
 {% endblock content %}
