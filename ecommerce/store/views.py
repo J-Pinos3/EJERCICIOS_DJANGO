@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+
 import json
 import datetime
 from .models import *
@@ -33,10 +34,19 @@ def cart(request):
         # all the order-items that have order as a parent
         items = order.orderitem_set.all()
     else:
+        try:
+            cart = json.loads(request.COOKIES['cart'])
+        except:
+            cart = {}
+        #cart = json.loads(request.COOKIES.get('cart', '[]'))
+        print('Cart from cookies: ', cart)
         items=[]
         #if user is not authenticated the code above will throw an error
         order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
         cartItems = order['get_cart_items']
+
+        for k in cart: #where k is the key of the dictionary (productId)
+            cartItems += cart[k]['quantity']
     return render(request, 'store/cart.html', {'items':items, 'order':order, 'cartItems':cartItems})
 
 
@@ -81,6 +91,7 @@ def updateItem(request):
         orderItem.delete()
 
     return JsonResponse('Item was added', safe=False)
+
 
 def processOrder(request):
     #print("Data: ", request.body)
