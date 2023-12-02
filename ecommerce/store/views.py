@@ -5,6 +5,7 @@ import json
 import datetime
 from .models import *
 
+from .utils import cookieCart
 
 def store(request):
     if request.user.is_authenticated:
@@ -13,9 +14,11 @@ def store(request):
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
     else:
-        items=[]
-        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False} 
-        cartItems = order['get_cart_items']
+        cookieData = cookieCart(request)
+        cartItems = cookieData['cartItems']
+        order = cookieData['order']
+        items = cookieData['items']
+        
 
     products = Product.objects.all()
 
@@ -24,7 +27,6 @@ def store(request):
 
 
 def cart(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         #if can not find an item, create it
@@ -33,20 +35,13 @@ def cart(request):
         cartItems = order.get_cart_items
         # all the order-items that have order as a parent
         items = order.orderitem_set.all()
-    else:
-        try:
-            cart = json.loads(request.COOKIES['cart'])
-        except:
-            cart = {}
-        #cart = json.loads(request.COOKIES.get('cart', '[]'))
-        print('Cart from cookies: ', cart)
-        items=[]
-        #if user is not authenticated the code above will throw an error
-        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-        cartItems = order['get_cart_items']
 
-        for k in cart: #where k is the key of the dictionary (productId)
-            cartItems += cart[k]['quantity']
+    else:
+        cookieData = cookieCart(request)
+        cartItems = cookieData['cartItems']
+        order = cookieData['order']
+        items = cookieData['items']
+
     return render(request, 'store/cart.html', {'items':items, 'order':order, 'cartItems':cartItems})
 
 
@@ -59,13 +54,17 @@ def checkout(request):
         cartItems = order.get_cart_items
         # all the order-items that have order as a parent
         items = order.orderitem_set.all()
+
     else:
-        items=[]
-        #if user is not authenticated the code above will throw an error
-        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-        cartItems = order['get_cart_items']
+        cookieData = cookieCart(request)
+        cartItems = cookieData['cartItems']
+        order = cookieData['order']
+        items = cookieData['items']
+        
     context = {'items':items, 'order':order,'cartItems':cartItems}
     return render(request, 'store/checkout.html', context)
+
+
 
 def updateItem(request):
     data = json.loads(request.body)
