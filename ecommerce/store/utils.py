@@ -42,3 +42,54 @@ def cookieCart(request):
             pass
 
     return {'items':items, 'order':order, 'cartItems':cartItems}
+
+
+def cartData(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        #if can not find an item, create it
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        #items = OrderItem.objects.filter(order=order)
+        cartItems = order.get_cart_items
+        # all the order-items that have order as a parent
+        items = order.orderitem_set.all()
+
+    else:
+        cookieData = cookieCart(request)
+        cartItems = cookieData['cartItems']
+        order = cookieData['order']
+        items = cookieData['items']
+
+    return {'items':items, 'order':order,'cartItems':cartItems}
+
+
+def guestOrder(request, data):
+    print("User is not logged in")
+    print("Cookies: ", request.COOKIES)
+    name = data['form']['name']
+    email = data['form']['email']
+    
+    cookieData = cookieCart(request)
+    items = cookieData['items']
+
+    customer, created = Customer.objects.get_or_create(
+        email = email,
+    )
+
+    customer.name = name
+    customer.save()
+
+    order = Order.objects.create(
+        customer = customer,
+        complete=False
+    )
+
+    for item in items:
+        product = Product.objects.get(id=item['product']['id'])
+
+        orderItem = OrderItem.objects.create(
+            product = product,
+            order = order,
+            quantity = item['quantity']
+        )
+    return customer, order
